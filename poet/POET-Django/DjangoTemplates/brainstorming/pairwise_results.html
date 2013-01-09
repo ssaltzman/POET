@@ -1,0 +1,118 @@
+<!--
+Approved for Public Release: 12-3351. Distribution Unlimited
+			(c)2012-The MITRE Corporation. 
+Licensed under the Apache License, Version 2.0 (the "License");
+			you may not use this file except in compliance with the License.
+			You may obtain a copy of the License at
+			http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-->
+
+{% extends "base.html" %}
+{% load thumbnail %}
+{% block title %}{{program.name}}: Pairwise Results{% endblock %}
+{% block css %}<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}pairwise.css" />
+<link rel="stylesheet" href="{{ STATIC_URL }}verticaltabs.css" />
+<script type="text/javascript" src="{{ STATIC_URL }}verticaltabs.pack.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}popup.js"></script>
+{% endblock %}
+{% block content %}
+
+<script type="text/javascript">
+    $(function() {
+        $("button,input:submit,input:button").button();
+        $("input:submit,input:button").css("font-size",".9em");
+        $("#submitIdea").verticaltabs();
+        $("#expandedMedia").dialog({ autoOpen: false, width:'auto',height:'auto', modal: true });
+        //$("#submitIdea").tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
+        //$("#submitIdea li").removeClass('ui-corner-top').addClass('ui-corner-left');
+    });
+        
+    function enlargeMedia(url, image){
+        if(image) {
+            $("#expandedMedia").html("<img src='" + url + "' />");
+        } else {
+            $("#expandedMedia").html("<embed src='" + url + "' autostart='false' />");
+        }
+        
+        $("#expandedMedia").dialog("open");
+        
+    }
+</script>
+
+<center><h1>Pairwise Results: {{activity.name}}</h1></center>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<br/>
+
+
+
+<table class="resultsTable">
+<tr>
+	<th>Idea</th>
+	<th>
+		<a onmouseover="popup('The likelihood of a particular idea to win against any other idea.');" href=''>
+			Score
+		</a>
+	</th>
+</tr>
+{% for node, vote in nodeVoteList %}
+<tr>
+	<td>{{node.text}}</td> 
+	<td class={% if vote > 50 %}"winner"{% else %}"loser"{% endif %}>
+		{{vote}}%
+	</td>
+</tr>
+{% endfor %}
+</table>
+
+<br/><br/>
+
+<table class="resultsTable">
+{% for row in comparisonTable %}
+	{% if forloop.first %}
+		<tr class="headerRow">
+		{% for header in row %}
+			{% if forloop.first %}
+				<th>
+					<a onmouseover="popup('Each percentage is the likelihood that the row\'s idea will beat the column\'s idea.');" href=''>
+						?
+					</a>
+				</th>
+			{% else %}
+				<th>{{header}}</th>
+			{% endif %}
+		{% endfor %}
+		</tr>
+	{% else %}
+		<tr class="datumRow">
+		{% for datum in row %}
+			{% if forloop.first %}
+				<th style="border-right: 1px solid #000;"> 
+					{{datum}}
+				</th>
+			{% else %}
+				{% if datum != "-" %}
+					<td class={% if datum > 50 %}"winner"{% else %}"loser"{% endif %}>						
+						{{datum}}%
+					</td>
+				{% else %}
+					<td>
+						{{datum}}
+					</td>
+				{% endif %}
+			{% endif %}
+		{% endfor %}
+		</tr>
+	{% endif %}
+{% endfor %}
+</table>
+{% endblock %}

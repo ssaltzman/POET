@@ -1,0 +1,117 @@
+<!--
+Approved for Public Release: 12-3351. Distribution Unlimited
+			(c)2012-The MITRE Corporation. 
+Licensed under the Apache License, Version 2.0 (the "License");
+			you may not use this file except in compliance with the License.
+			You may obtain a copy of the License at
+			http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-->
+
+{% extends "base.html" %}
+{% load thumbnail %}
+{% block title %}{{program.name}}: Brainstorming{% endblock %}
+{% block css %}<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}brainstorming.css" />
+<link rel="stylesheet" href="{{ STATIC_URL }}verticaltabs.css" />
+<script type="text/javascript" src="{{ STATIC_URL }}verticaltabs.pack.js"></script>
+{% endblock %}
+{% block content %}
+
+<script type="text/javascript">
+    $(function() {
+        $("button,input:submit,input:button").button();
+        $("input:submit,input:button").css("font-size",".9em");
+        $("#submitIdea").verticaltabs();
+        $("#expandedMedia").dialog({ autoOpen: false, width:'auto',height:'auto', modal: true });
+        //$("#submitIdea").tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
+        //$("#submitIdea li").removeClass('ui-corner-top').addClass('ui-corner-left');
+    });
+        
+    function enlargeMedia(url, image){
+        if(image) {
+            $("#expandedMedia").html("<img src='" + url + "' />");
+        } else {
+            $("#expandedMedia").html("<embed src='" + url + "' autostart='false' />");
+        }
+        
+        $("#expandedMedia").dialog("open");
+        
+    }
+</script>
+
+<center><h1>Edit {{activity.name}}</h1></center>
+
+<div id="expandedMedia">//{{ STATIC_URL }}{{n.image.url}}</div>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<br/>
+
+<form action="/{{ program.name }}/{{ activity.id }}/editBrainstorming/" method="post"  enctype="multipart/form-data">
+<select name="action">
+	<option value="null">Choose an action...</option>
+	<option value="merge">Merge nodes</option>
+	<option value="export">Export nodes</option>
+	<option value="delete">Delete nodes</option>
+</select>
+{% csrf_token %}
+<div id ="allIdeas">
+    {% for n in node_list %}
+    {% if n == "root_open" %}
+    <div class="idea">
+        <ul class="ideaListOpen">
+            {% else %}{% if n == "open" %}
+	    <ul class="ideaListClose">
+                {% else %}{% if n == "close" %}
+	    </ul>
+            {% else %}{% if n == "root_close" %}
+        </ul>
+    </div>
+
+    {% else %}
+    {# If you want to distinguish between roots and non-roots, use "if n.parent_node" for non-roots. #}
+	<span class="not-editable-node">
+	    <li id="{{n.id}}">
+        <table class="itemElements">
+			<td>
+				<input type="checkbox" value="{{n.id}}" id="check{{n.id}}" name="selected_nodes" />
+			</td>
+            <td>  
+                {% if n.image %}
+                    <td><span class="itemImage">
+                    <img src="{{ STATIC_URL }}{% thumbnail n.image 75x75 %}" onclick="javascript:enlargeMedia('{{ STATIC_URL }}{{n.image.url}}',true);"/></span></td>
+                {% endif %}
+				{% if n.video %}
+                    <td><span class="itemVideo">
+                    <img src="{{ STATIC_URL }}{{n.video.url|slice:"0:-4"}}-thumbnail.png" height="50" width="50" onclick="javascript:enlargeMedia('{{ STATIC_URL }}{{n.video.url}}', false);"/></span></td>
+                {% endif %}
+					<td class="not-submitted-by-current-user"><label for="check{{n.id}}">{{ n.text }}</label></td>
+				<td>
+				{% if n.sub_time == n.updated_time %}
+					<span class="ideaTime">{{n.sub_time}}</span>
+				{% else %}{% if n.last_edit_by and n.author != n.last_edit_by %}
+					<span class="ideaTime">{{n.sub_time}}, last updated {{n.updated_time}} by an administrator</span>
+				{% else %}
+					<span class="ideaTime">{{n.sub_time}}, last updated {{n.updated_time}}</span>
+				</td>
+				{% endif %}{% endif %}
+            </tr>
+        </table>
+    </li>
+	</span>
+
+{% endif %}{% endif %}{% endif %}{% endif %}
+
+{% empty %}
+<p>No ideas have been submitted.</p>
+{% endfor %}
+<input type="submit" value="Submit" /></td>
+</form>
+{% endblock %}

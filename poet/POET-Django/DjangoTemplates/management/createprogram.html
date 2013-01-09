@@ -1,0 +1,89 @@
+<!--
+Approved for Public Release: 12-3351. Distribution Unlimited
+			(c)2012-The MITRE Corporation. 
+Licensed under the Apache License, Version 2.0 (the "License");
+			you may not use this file except in compliance with the License.
+			You may obtain a copy of the License at
+			http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-->
+
+{% extends "base.html" %}
+{% block title %}New Program{% endblock %}
+{% block css %}
+	<script type="text/javascript" src="{{ STATIC_URL }}popup.js"></script>
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}createprogram.css" />
+{% endblock %}
+{% block content %}
+
+<script type="text/javascript">
+    $(function() {
+        $("button,input:submit,input:button").button();
+        $("input:submit,input:button").css("font-size",".9em");
+    });
+</script>
+
+<div class="module">
+    <h1>New Program</h1>
+	
+    <div id='programs'>
+	<form action="/makeprogram/" method="post">
+	{% csrf_token %}
+	Name: <input type="text" name="program_name" id="programname" value=""/><br />
+	
+	<div id='users'>
+	{% if user_list %}
+		<table>
+			<tr>
+				<th></th>
+				<th>Name</th>
+				<th>Type</th>
+				<th>Admin?</th>
+			</tr>
+		{% for usr in user_list %}
+			<tr>
+				{% if usr == user %}
+					<td style="display:none;"><input id="check{{usr.id}}" type="checkbox" name="included_users" value="{{usr.id}}" checked="checked"></td>
+					<td><input type="checkbox" disabled="disabled" checked="checked"></td>
+				{% else %}
+					<td><input id="check{{usr.id}}" type="checkbox" name="included_users" value="{{usr.id}}"></td>
+				{% endif %}
+				<td><label for="check{{usr.id}}">
+						{{usr.first_name}} {{usr.last_name}}
+				</label></td>
+				<td><select name="{{usr.id}}">
+					{% for type in p_types %}
+						<option value="{{type|first}}">{{type|last}}</option>
+					{% endfor %}
+				</select></td>
+				{% if usr == user %}
+					<td style="display:none;"><input id="admin{{usr.id}}" type="checkbox" name="admin_users" value="{{usr.id}}" checked="checked"/></td>
+					<td><input type="checkbox" style="margin-left: auto; margin-right: auto; width: 100%;" checked="checked" disabled="disabled"/></td>
+				{% else %}
+					<td><input id="admin{{usr.id}}" type="checkbox" name="admin_users" value="{{usr.id}}" style="margin-left: auto; margin-right: auto; width: 100%;" /></td>
+				{% endif %}
+			</tr>
+		{% endfor %}
+		</table>
+	{% else %}
+		<p>No users exist yet.</p>
+	{% endif %}
+	</div>
+	<br/>
+	<input type="checkbox" id="top-locked" name="top-locked"/><label for="top-locked">Lock Top-Level Submissions</label> 
+	[<a class="popup" onmouseover="popup('If selected, only program Admins will be able to submit top-level ideas.');" href=''>?</a>]
+	<br/><br/>
+	<input type="submit" value="Submit" />
+	</form>
+	{% if messages %}
+		<ul class="messages">
+		{% for message in messages %}
+			<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+		{% endfor %}
+		</ul>
+	{% endif %}
+    </div>
+</div>
+
+{% endblock %}

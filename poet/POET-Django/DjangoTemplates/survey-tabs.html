@@ -1,0 +1,221 @@
+<!--
+Approved for Public Release: 12-3351. Distribution Unlimited
+			(c)2012-The MITRE Corporation. 
+Licensed under the Apache License, Version 2.0 (the "License");
+			you may not use this file except in compliance with the License.
+			You may obtain a copy of the License at
+			http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-->
+
+{% extends "base.html" %}
+{% load thumbnail %}
+{% block title %}{{survey.name}}{% endblock %}
+{% block css %}<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}program.css" />
+{% endblock %}
+{% block content %}
+
+<!--[if lt IE 9]><script language="javascript" type="text/javascript" src="excanvas.js"></script><![endif]-->
+<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}dist/jquery.min.js"></script>
+<script language="javascript" type="text/javascript" src="{{ STATIC_URL }}dist/jquery.jqplot.min.js"></script>
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}dist/jquery.jqplot.css" />
+
+<script type="text/javascript" src="{{ STATIC_URL }}dist/plugins/jqplot.canvasAxisLabelRenderer.min.js"></script>
+
+<script type="text/javascript" src="{{ STATIC_URL }}dist/plugins/jqplot.barRenderer.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}dist/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}dist/plugins/jqplot.pointLabels.min.js"></script>
+
+<script type="text/javascript" src="{{ STATIC_URL }}dist/plugins/jqplot.canvasTextRenderer.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}dist/plugins/jqplot.canvasAxisTickRenderer.min.js"></script>
+<script type="text/javascript" src="{{ STATIC_URL }}dist/plugins/jqplot.categoryAxisRenderer.min.js"></script>
+
+
+<script type="text/javascript">
+
+	function onloadFunction() {
+	}
+
+$(document).ready(function(){
+	{% for question, group_counts in s_list %}
+	    {% for group in group_counts %}
+	    var q{{question.id}}_g{{forloop.counter}} = {{group}}
+	    {% endfor %}
+	   	//var g1 = [["Strongly Disagree", 0], ["Disagree", 0], ["Somewhat Disagree", 0], ["Neither", 0], ["Somewhat Agree", 0], ["Agree", 2], ["Strongly Agree", 3], ];
+	    
+	    var s_plot{{forloop.counter}} = $.jqplot ('chart_s{{forloop.counter}}', [{%for group in group_counts%}q{{question.id}}_g{{forloop.counter}},{% endfor %}], {
+	      // Give the plot a title.
+	      title: '{{question.question}}',	
+			axesDefaults: {
+        		labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+        		tickOptions:{ 
+        			formatString:'%.0f' 
+   				} 
+			},
+			axes: {
+				xaxis: {
+					pad:0
+				},
+				yaxis: {
+					padMin:0,
+					label: "responses",
+					ticks: {{y_ticks}}
+				}
+	    	}	
+	    });
+	{% endfor %}
+
+	{% for question, group_counts in q_list %}
+	    {% for group in group_counts %}
+	    var q{{question.id}}_g{{forloop.counter}} = {{group}}
+	    {% endfor %}
+	   	//var g1 = [["Strongly Disagree", 0], ["Disagree", 0], ["Somewhat Disagree", 0], ["Neither", 0], ["Somewhat Agree", 0], ["Agree", 2], ["Strongly Agree", 3], ];
+	    
+	    var q_plot{{forloop.counter}} = $.jqplot ('chart_q{{forloop.counter}}', [{%for group in group_counts%}q{{question.id}}_g{{forloop.counter}},{% endfor %}], {
+	      // Give the plot a title.
+	      title: '{{question.question}}',	
+			axesDefaults: {
+        		labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+        		tickOptions:{ 
+        			formatString:'%.0f' 
+   				} 
+			},
+			axes: {
+				xaxis: {
+					pad:0
+				},
+				yaxis: {
+					padMin:0,
+					label: "responses"
+				}
+	    	}	
+	    });
+	{% endfor %}
+
+	{% for question, group_counts in i_list %}
+	    {% for group in group_counts %}
+	    var q{{question.id}}_g{{forloop.counter}} = {{group}}
+	    {% endfor %}
+	   	//var g1 = [["Strongly Disagree", 0], ["Disagree", 0], ["Somewhat Disagree", 0], ["Neither", 0], ["Somewhat Agree", 0], ["Agree", 2], ["Strongly Agree", 3], ];
+	    
+	    var s_plot{{forloop.counter}} = $.jqplot ('chart_i{{forloop.counter}}', [{%for group in group_counts%}q{{question.id}}_g{{forloop.counter}},{% endfor %}], {
+	      // Give the plot a title.
+	      title: '{{question.question}}',	
+			axesDefaults: {
+        		labelRenderer: $.jqplot.CanvasAxisLabelRenderer,
+        		tickOptions:{ 
+        			formatString:'%.0f' 
+   				} 
+			},
+			axes: {
+				xaxis: {
+					pad:0
+				},
+				yaxis: {
+					padMin:0,
+					label: "responses"
+				}
+	    	}	
+	    });
+	{% endfor %}
+});
+</script>
+
+
+<center><h1>{{ survey.name }}</h1></center>
+
+<div id="tabs">
+	<div id="tabs-1" style="margin-left:10%;margin-right:10%;clear:both;">
+		<h2>Significant Questions:</h2>
+		{% for question, group_counts in s_list %}
+		<div id="chart_s{{forloop.counter}}" style="height:300px;width:300px;float:left;margin:20px;"></div> 
+		{% endfor %}
+	</div>
+
+	<div id="tabs-2" style="margin-left:10%;margin-right:10%;clear:both;">
+		<h2>Possibly Significant Questions:</h2>
+		{% for question, group_counts in q_list %}
+		<div id="chart_q{{forloop.counter}}" style="height:300px;width:300px;float:left;margin:20px;"></div> 
+		{% endfor %}
+	</div>
+
+	<div id="tabs-3" style="margin-left:10%;margin-right:10%;clear:both;">
+		<h2>Insignificant Questions:</h2>
+		{% for question, group_counts in i_list %}
+		<div id="chart_i{{forloop.counter}}" style="height:300px;width:300px;float:left;margin:20px;"></div> 
+		{% endfor %}
+	</div>
+
+
+	<div id="tabs-4" style="clear:both;">
+		Groups are: 
+		<ul>
+		{% for group in survey.surveygroup_set.all %}
+			<li>{{group.name}}
+			<ul>
+				{% for member in group.surveyrespondent_set.all %}
+				<li>{{member.name}}</li>
+				{% endfor %}
+			</ul>
+			</li>
+		{% endfor %}
+		</ul>
+	</div>
+
+	<div id="tabs-5" style="clear:both;">
+		Significant Questions:
+		<ul>
+		{% for question, grouped_responses in s_list %}
+			<li>{{question.question}} ({{question.Pvalue|floatformat:3}})</li>
+			<ul>
+			{% for group in survey.surveygroup_set.all %}
+				<li>[{% for datapoint in question.surveydatapoint_set.all %}{% if datapoint.respondent.group == group %}{{datapoint.value}}, {% endif %}{% endfor %}]</li>
+			{% endfor %}
+			</ul>
+		{% empty %}
+			<li>No significant questions found.</li>
+		{% endfor %}
+		</ul>
+
+		Possibly Significant Questions:
+		<ul>
+		{% for question, grouped_responses in q_list %}
+			<li>{{question.question}} ({{question.Pvalue|floatformat:3}})</li>
+			<ul>
+			{% for group in survey.surveygroup_set.all %}
+				<li>[{% for datapoint in question.surveydatapoint_set.all %}{% if datapoint.respondent.group == group %}{{datapoint.value}}, {% endif %}{% endfor %}]</li>
+			{% endfor %}
+			</ul>
+		{% empty %}
+			<li>No significant questions found.</li>
+		{% endfor %}
+		</ul>
+
+		Insignificant Questions:
+		<ul>
+		{% for question, grouped_responses in i_list %}
+			<li>{{question.question}} ({{question.Pvalue|floatformat:3}})</li>
+			<ul>
+			{% for group in survey.surveygroup_set.all %}
+				<li>[{% for datapoint in question.surveydatapoint_set.all %}{% if datapoint.respondent.group == group %}{{datapoint.value}}, {% endif %}{% endfor %}]</li>
+			{% endfor %}
+			</ul>
+		{% empty %}
+			<li>No significant questions found.</li>
+		{% endfor %}
+		</ul>
+	</div>
+</div>
+
+{% comment %}
+{% for question in s_list %}
+	{% for group in survey.surveygroup_set.all %}
+		{% for respondent in group.surveyrespondent_set.all %}
+			{{ surveydatapoint.object.get respondent=respondent, question=question }}
+		{% endfor %}
+	{% endfor %}
+{% endfor %}
+{% endcomment %}
+
+{% endblock %}

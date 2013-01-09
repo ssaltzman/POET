@@ -1,0 +1,100 @@
+/*
+Approved for Public Release: 12-3351. Distribution Unlimited
+			(c)2012-The MITRE Corporation. 
+Licensed under the Apache License, Version 2.0 (the "License");
+			you may not use this file except in compliance with the License.
+			You may obtain a copy of the License at
+			http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+*/
+
+body {
+    font:13px normal Helvetica, Arial, san-serif;
+}
+
+.divider {
+    padding:0 10px;
+    color:#ddd;
+}
+
+#poet-logo {
+    margin:0 0 0 10px;
+    display:block;
+    width:103px;
+    height:30px;
+    overflow:hidden;
+    text-indent:-999999px;
+    background:url(logo.png) 0 0 no-repeat;
+}
+
+#menu-logo {
+    width: 100px;
+    vertical-align: middle;
+}
+
+#menu-bar {
+    width: 100%;
+}
+
+#menu-nav {
+    padding:10px 10px 0 0;
+    text-align: right;
+}
+
+.line {
+    color: #3399FF;
+}
+
+.module {
+    background: -webkit-gradient(linear,left bottom,left top,color-stop(0.16, #999999),color-stop(0.58,#cccccc));
+    background: -moz-linear-gradient(top, #cccccc, #999999);
+    -moz-border-radius: 6px;
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#cccccc',endColorstr='#999999');
+    padding:10px;
+    color: #3399FF;
+    width: 50%;
+}
+
+#programs {
+	background: #FFFFFF;
+	padding: 10px;
+}
+
+#users {
+	background: #FFFFFF;
+	padding: 10px;
+}
+
+.programList{
+    border: 1px solid #3399FF;
+    padding: 5px 5px 25px;
+    margin: 0 0 10px;
+}
+
+#addProgramButton {
+    text-align: right;
+}
+.programList a{
+    
+}
+
+.error{
+	color: #D00;
+}
+
+table{
+	border-collapse: collapse;
+}
+
+table.userTable, table.userTable tr, table.userTable tr th, table.userTable tr td{
+	border: 1px solid #000;
+}
+
+th, td {
+	padding: 4px;
+}
+
+td {
+	text-align: center;
+}

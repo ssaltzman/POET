@@ -1,0 +1,15 @@
+K 10
+svn:ignore
+V 162
+comment.html
+detail.html
+detail_old.html
+submit.html
+topn_droppable.html
+topn_old.html
+topn_ordered.html
+topn_table.html
+topn_working.html
+brainstorming_new.html
+
+END

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by Seth Landsman (Mitre Corporation) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" targetNamespace="http://poet.mitre.org/model" xmlns="http://poet.mitre.org/model">
+	<xs:complexType name="ConfigurationType">
+		<xs:sequence>
+			<xs:element name="description" type="xs:string"/>
+			<xs:element name="vectors">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="vector" type="ConfigurationVectorType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="ConfigurationVectorType">
+		<xs:sequence>
+			<xs:element name="question" maxOccurs="unbounded">
+				<xs:complexType>
+					<xs:attribute name="id" type="xs:string" use="required"/>
+					<xs:attribute name="weight" type="xs:int" use="required"/>
+					<xs:attribute name="algorithm" type="xs:string" use="required"/>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:element name="Configuration" type="ConfigurationType"/>
+</xs:schema>

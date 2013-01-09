@@ -1,0 +1,33 @@
+<mod:Instance xmlns:mod="http://poet.mitre.org/model">
+    <mod:filter>filter-1</mod:filter>
+    <mod:configuration>config-1</mod:configuration>
+    <mod:vectors>
+        <mod:vector>
+            <mod:name>trust</mod:name>
+            <mod:value>95</mod:value>
+            <mod:pedigree>
+                <mod:question>1</mod:question>
+                <mod:question>2</mod:question>
+                <mod:question>8</mod:question>
+            </mod:pedigree>
+        </mod:vector>
+        <mod:vector>
+            <mod:name>stakeholder commitment</mod:name>
+            <mod:value>40</mod:value>
+            <mod:pedigree>
+                <mod:question>6</mod:question>
+                <mod:question>9</mod:question>
+                <mod:question>2</mod:question>
+            </mod:pedigree>
+        </mod:vector>
+        <mod:vector>
+            <mod:name>agility</mod:name>
+            <mod:value>5</mod:value>
+            <mod:pedigree>
+                <mod:question>9</mod:question>
+                <mod:question>1</mod:question>
+                <mod:question>6</mod:question>
+            </mod:pedigree>
+        </mod:vector>
+    </mod:vectors>
+</mod:Instance>

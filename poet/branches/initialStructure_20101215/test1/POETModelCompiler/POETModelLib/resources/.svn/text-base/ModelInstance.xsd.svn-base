@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by Seth Landsman (Mitre Corporation) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" targetNamespace="http://poet.mitre.org/model" xmlns="http://poet.mitre.org/model">
+	<xs:complexType name="InstanceType">
+		<xs:sequence>
+			<xs:element name="filter" type="xs:string"/>
+			<xs:element name="configuration" type="xs:string"/>
+			<xs:element name="vectors">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="vector" type="VectorType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="VectorType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="value" type="xs:int"/>
+			<xs:element name="pedigree">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="question" type="xs:string" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="Instance" type="InstanceType"/>
+</xs:schema>

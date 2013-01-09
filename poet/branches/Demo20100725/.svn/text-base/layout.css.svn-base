@@ -1,0 +1,469 @@
+body {
+	margin:0;
+	padding:10px;
+	font:13px normal Helvetica, Arial, san-serif;
+	position:relative;
+/* 	:D
+	background: url('blueBG.png') repeat-x;
+	
+*/	
+}
+
+body * {
+	margin:0;
+	padding:0;
+}
+
+ul, ol {
+	list-style:none;
+}
+
+td {
+	vertical-align:top;	
+}
+
+a,
+a:link,
+a:visited {
+	color:#0099ff;
+	text-decoration:underline;
+}
+
+a:hover {
+	color:#fff;
+	text-decoration:none;
+	background:#0099ff;
+}
+
+#container {
+	position:relative;	
+	
+}
+
+#content {
+	position:relative;
+}
+
+.setCheckboxes {
+	float: left;
+	width: 133px;
+	white-space:nowrap;
+	padding: 2px !important;
+}
+
+.hide{
+	visibility:hidden;
+}
+
+h1 {
+	padding-bottom:5px;
+}
+
+h5 {
+	font-size:17px;
+	font-weight:bold;
+	padding-bottom:4px;
+}
+
+.top-toolbar {
+	border-bottom:#ccc 1px dotted;
+	padding-bottom:10px;
+	margin-bottom:10px;
+	font-size: 80%;	
+}
+
+.bottom-toolbar {
+	border-top:#ccc 1px dotted;
+	padding-top:10px;
+	margin-top:10px;
+	font-size: 80%;
+}
+
+.bottom-toolbar-ask {
+	border-top:#ccc 1px dotted;
+	padding-top:10px;
+	margin-top:10px;
+	font-size: 100%;
+}
+
+.questionButtons {
+	margin: auto;
+	width: 170px;
+}
+
+#question-list table {
+	width:100%;
+	border-collapse:collapse;
+}
+
+.header {
+	font-weight:bold;	
+}
+
+.header td {
+	padding-bottom:7px;
+}
+
+#question-details {
+	padding:0 20px;
+	/*position:relative;
+	padding-left:413px;
+	padding-right:400px;*/
+}
+
+.module {
+	background: -moz-linear-gradient(top,  #cccccc,  #999999);
+	-moz-border-radius: 6px;
+	padding:10px;
+	color: #3399FF;
+}
+
+
+.form td {
+	vertical-align:top;
+	padding-bottom:10px;
+	padding-right:10px;
+}
+
+.form .label {
+	color:#999;
+	text-align:right;
+	padding:0 20px;
+}
+
+.form .radio-group {
+	padding:0 0 7px 0;
+}
+
+.previewInput {
+	padding:10px;
+}
+
+.comments {
+	padding-top:10px;
+}
+
+#login {
+	width:500px;
+	height: 300px;
+	background: -moz-linear-gradient(top,  #cccccc,  #999999);
+	-moz-border-radius: 6px;
+	padding: 20px;
+	margin:150px auto auto;
+}
+
+#bigPoetLogo{	
+	margin: auto;
+	display:block;
+	width:103px;
+	height:30px;
+	overflow:hidden;
+	text-indent:-999999px;
+	background:url(/GroupMind/logo.png) 0 0 no-repeat;
+}
+
+#login-input {
+	padding: 50px 20px;
+	margin: auto;
+	width: 400px;
+	height: 200px;
+	font-size: 18px;
+	font-weight: bold;
+	color: #3399FF;
+}
+
+#login-info{
+	visibility: hidden;
+}
+
+#login ul {
+	list-style:disc;
+	padding:0 0 10px 40px;
+}
+
+#login p {
+	padding:0 0 10px 0;
+}
+
+#menu {
+	background:#fff;
+	color:#666;
+}
+
+#question-editor-columns {
+	width: 100%;
+	height: 100%
+	
+}
+
+#assessmentContent, #questionDetailContent, #questionListContent, #questionPreviewContent{
+	background: #fff;
+	padding: 20px;
+	margin-top: 10px;
+}
+
+#col1 {
+	width:50%;
+	vertical-align: top;
+}
+
+#col3 {
+	width: 50%;
+	vertical-align: bottom;
+}
+
+#question-preview, #question-list{
+	height: 90%;
+}
+
+#col2 {
+	width: 50%;
+	vertical-align: center;
+}
+
+
+#poet-logo {
+	margin:0 0 0 10px;
+	display:block;
+	width:103px;
+	height:30px;
+	overflow:hidden;
+	text-indent:-999999px;
+	background:url(/GroupMind/logo.png) 0 0 no-repeat;
+}
+
+#poet-logo:hover {
+	background-position:0 -30px;
+}
+
+#menu-logo {
+	width:100px;
+	vertical-align: middle;
+}
+
+#menu table {
+	width:100%;
+	height: 50px;
+}
+
+#menu-session {
+	padding-left:10px;
+	width:200px;
+}
+
+#menu-activities {
+	width:450px;
+}
+
+#quesNum {
+	font-weight:bold;
+	font-size:16px; 
+	text-align:center;
+	margin:10px 0;
+	color: #000000;
+}
+
+#progressbar {
+	margin:auto;
+	height:15px;
+	width:350px;
+}
+
+#likertInput {
+
+}
+
+
+#likertInput td {
+	font-size:14px;
+	text-align:center;
+	padding-right:20px;
+}
+
+#program-assessment {
+	margin:auto;
+	width:900px;
+	padding: 10px 20px 20px 20px;
+}
+
+#chartDiv{
+	margin: auto;
+	width: 55%;
+}
+
+.previewText {
+	font-size:18px;
+	color: black;
+}
+
+#questionInput {
+	margin:15px 0;
+}
+
+
+.panel {
+	float:left;
+	width:200px;
+}
+
+dbg-console {
+	margin-top:40px;
+}
+
+.user-li {
+	padding-left:10px;
+}
+
+.controls {
+	clear:both;
+}
+
+#menu .user-table {
+	font-size:15px;
+	border-collapse:collapse;
+	float: left; 
+	width: 880px;
+}
+
+#menu .user-table td {
+	padding: 10px;	
+}
+
+#menu .user-table tr {
+	background:#E0F0FF;
+	border-bottom:white 5px solid;
+}
+
+#menu .user-table tr.table-header {
+	background:#fff;
+	font-weight:bold;
+	font-size: 20px;
+}
+
+#menu .user-table tr.table-header a {
+	font-size: 12px;
+}
+
+.draggable ul {
+    list-style-type:square;
+    padding:20px;   
+    min-height:50px;
+    width:110px;
+}
+
+.draggable li {
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	user-select: none;
+	cursor:move;
+	font-weight:bold;
+}
+
+.draggable .dds_selected {
+    background:#99ccff;
+}
+.draggable .dds_ghost {
+    opacity:0.5;
+    cursor:move;
+}
+.draggable .dds_move {
+    background:#cfc;
+    cursor:move;
+}
+
+.draggable .dds_hover {
+    background:#ccc;
+    border:1px dashed #999;
+    cursor:move;
+    padding: 9px 8px 9px 10px;
+}
+
+.draggable .holder {
+    border:1px dashed #333;
+    background:#fff;
+}
+
+.butControls {
+	width: 150px;
+	margin-bottom: 8px;
+}
+
+.setControls {
+	clear: both;
+	padding: 10px;
+	width: 116px;
+	height: 32px;
+	overflow: hidden;
+	margin: auto;	
+}
+
+.closedSet {	
+	text-indent:-999999px;
+	margin-left: -93px;
+}
+
+.releasedSet {
+	text-indent:-999999px;
+	margin-left: 0px;
+}
+
+.selector {
+	margin-bottom:10px;
+	
+}
+.assign-user-groups {
+	float:left;
+	padding:0 0 0 10px;
+}
+
+.title-delete {
+	font-size:12px;
+}
+
+.pct-done {
+	border: 2px dashed #ccc;
+	padding:10px;
+	font-weight:bold;
+	color: #999;
+
+}
+/*
+.PM_td .pct-done {
+	background:#61d24a;
+}
+.PMO_td .pct-done {
+	background:#dd4848;
+}
+
+.Contractor_td .pct-done {
+	background:#cd4ad2;
+}
+.Stakeholder_td .pct-done {
+	background:#33ccff;
+}
+
+.User_td .pct-done {
+	background:#ffb533;
+}
+*/
+
+#user-menu {
+	padding:10px 10px 0 0;
+	text-align: right;
+}
+
+#user-menu a {
+	color: #3399ff;
+	text-decoration: none;
+}
+
+#user-menu a:hover {
+	color: #143D66;
+	text-decoration: none;
+	background: #fff;
+}
+
+.divider {
+	padding:0 10px;
+	color:#ddd;
+}

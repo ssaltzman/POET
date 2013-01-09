@@ -1,0 +1,166 @@
+<!--
+Approved for Public Release: 12-3351. Distribution Unlimited
+			(c)2012-The MITRE Corporation. 
+Licensed under the Apache License, Version 2.0 (the "License");
+			you may not use this file except in compliance with the License.
+			You may obtain a copy of the License at
+			http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-->
+
+{% extends "base.html" %}
+{% load thumbnail %}
+{% block title %}{{program.name}}: Brainstorming{% endblock %}
+{% block css %}<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}topn.css" />
+<link rel="stylesheet" href="{{ STATIC_URL }}verticaltabs.css" />
+<script type="text/javascript" src="{{ STATIC_URL }}verticaltabs.pack.js"></script>
+{% endblock %}
+{% block content %}
+
+<script type="text/javascript">
+	$(function() {
+		$( "#votedfor_sort, #notvotedfor_sort" ).sortable({
+			connectWith: ".connectedSortable",
+			
+		}).disableSelection();
+	});
+	
+	$(function() {
+		$( "#votedfor_sort" ).sortable({
+			update: function(event, ui) { 
+				var votesArray = fetchVotesArray();
+				if(votesArray.length > {{activity.topn.n}}){
+					//document.getElementById("maxError").style.visibility = "visible";
+					$('#maxError').css("visibility", "visible");
+					$('#saveStatus').text("Error.");
+					$('#saveStatus').css("color", "#F00");
+				}
+				else{
+					$('#maxError').css("visibility", "invisible");
+					$('#saveStatus').text("Saving...");
+					$('#saveStatus').css("color", "#00C");
+					submitform();
+				}
+			},
+		});
+	});
+		
+    $(function() {
+        $("button,input:submit,input:button").button();
+        $("input:submit,input:button").css("font-size",".9em");
+        $("#submitIdea").verticaltabs();
+        $("#expandedMedia").dialog({ autoOpen: false, width:'auto',height:'auto', modal: true });
+        //$("#submitIdea").tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
+        //$("#submitIdea li").removeClass('ui-corner-top').addClass('ui-corner-left');
+    });
+        
+    function enlargeMedia(url, image){
+        if(image) {
+            $("#expandedMedia").html("<img src='" + url + "' />");
+        } else {
+            $("#expandedMedia").html("<embed src='" + url + "' autostart='false' />");
+        }
+        
+        $("#expandedMedia").dialog("open");
+        
+    };
+	
+	function fetchVotesArray(){
+		var votes = document.getElementById("votedfor_sort").getElementsByTagName("li");
+		var placeholders = document.getElementsByClassName('placeholder').length;
+		var votesArray = new Array();
+		var j = 0;
+		for(var i = 0; i < votes.length; i++){
+			if( votes[i].getAttribute("class") != "placeholder" ) {
+				votesArray[j] = votes[i].id;
+				j++;
+			}
+		}
+		return votesArray;
+	}
+	
+	function submitform(){
+		var votesArray = fetchVotesArray();
+	
+		var voteField = document.createElement("input");
+		voteField.setAttribute("type", "hidden");
+		voteField.setAttribute("name", "selected_nodes");
+		voteField.setAttribute("value", votesArray);
+
+		document.voteform.appendChild(voteField);
+				
+		document.voteform.submit();
+	}
+</script>
+
+<center><h1>Top {{activity.topn.n}} Vote: {{activity.name}}</h1></center>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<br/>Drag-and-drop items into the right column to order them by preference.
+<br/>You may revise your vote as much as you like until the activity is closed.
+<br/><br/>
+
+{% if user_vote_list %}
+Status: <span id="saveStatus" style="color:#0C0;">Saved!</span>
+{% else %}
+Status: <span id="saveStatus" style="color:#666;">Not Yet Voted</span>
+{% endif %}
+<p id="maxError" style="color: #F00; visibility:hidden;">
+	You have selected too many items. You must limit your selection to {{activity.topn.n}} item{{activity.topn.n|pluralize}} or fewer to proceed.
+	<br/>
+</p>
+
+<form id="voteform" name="voteform" action="applyvote/" method="post"  enctype="multipart/form-data">
+{% csrf_token %}
+
+<div id="voteContainer">
+	<span id="voteAgainstSpan">
+		<p class="listHeader">Unselected</p>
+		<ol id="notvotedfor_sort" class="connectedSortable voteList">
+		{% for n in node_list %} 
+			{% if not n in user_vote_list %}
+				<li id="{{n.id}}" value="{{n.id}}" class="ui-state-highlight" style="height: 50px; width:300px;">
+					{{n.text}}
+				</li>
+			{% endif %}
+		{% endfor %}
+		</ol>
+	</span>
+	
+	<span id="voteForSpan">
+		<p class="listHeader">Selected</p>
+		<ol id="placeholder_list" class="voteList" style="position: absolute;">
+		{% for p in placeholders %}
+			<li class="placeholder" style="height: 50px; width:300px; border: 1px solid #000;">
+				{{ forloop.counter }})
+			</li>
+		{% endfor %}
+		</ol>
+		<ol id="votedfor_sort" class="connectedSortable voteList" style="min-height: {{minHeight}}px; position:absolute;">
+		{% for n in user_vote_list %} 
+			<li id="{{n.id}}" value="{{n.id}}" class="ui-state-default votedForLi" style="height: 50px; width:300px;">
+				{{ forloop.counter }}) {{n.text}}
+			</li>
+		{% endfor %}
+		</ol>
+	</span>
+
+
+</div>
+
+</form>
+
+{% if user_is_admin %}
+	<a href="results/">Results</a>
+{% endif %}
+
+{% endblock %}

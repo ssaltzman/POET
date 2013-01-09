@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- edited with XMLSpy v2009 sp1 (http://www.altova.com) by Seth Landsman (Mitre Corporation) -->
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" targetNamespace="http://poet.mitre.org/model" xmlns="http://poet.mitre.org/model">
+	<xs:complexType name="QuestionCorpusType">
+		<xs:sequence>
+			<xs:element name="meta">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="exportDate" type="xs:dateTime"/>
+						<xs:element name="server" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="questions">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="question" type="QuestionType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="QuestionType">
+		<xs:sequence>
+			<xs:element name="name" type="xs:string"/>
+			<xs:element name="comment" type="xs:string"/>
+			<xs:element name="format" type="xs:string"/>
+			<xs:element name="text" type="xs:string"/>
+			<xs:element name="description" type="xs:string"/>
+			<xs:element name="options" type="xs:string"/>
+			<xs:element name="users">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="userGroup" type="xs:string" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="answers">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="answer" type="AnswerType" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:complexType name="AnswerType">
+		<xs:sequence>
+			<xs:element name="who" type="xs:string"/>
+			<xs:element name="when" type="xs:dateTime"/>
+			<xs:element name="values">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="value" type="xs:string" maxOccurs="unbounded"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+		<xs:attribute name="id" type="xs:string" use="required"/>
+	</xs:complexType>
+	<xs:element name="QuestionCorpus" type="QuestionCorpusType"/>
+</xs:schema>

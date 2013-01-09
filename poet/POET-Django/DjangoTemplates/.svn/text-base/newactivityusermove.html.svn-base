@@ -1,0 +1,53 @@
+<!--
+Approved for Public Release: 12-3351. Distribution Unlimited
+			(c)2012-The MITRE Corporation. 
+Licensed under the Apache License, Version 2.0 (the "License");
+			you may not use this file except in compliance with the License.
+			You may obtain a copy of the License at
+			http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-->
+
+{% extends "base.html" %}
+{% load thumbnail %}
+{% block title %}{{program.name}}{% endblock %}
+{% block css %}<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}program.css" />
+{% endblock %}
+{% block content %}
+	
+<script type="text/javascript">
+function toggle(source, check_value) {
+	checkboxes = document.getElementsByName('selected_participants');
+	for(var i in checkboxes) {
+		checkboxes[i].checked = check_value;
+	}
+}
+</script>
+	
+<center><h1>Moving users to {{ activity.name }}...</h1></center>
+
+<p>Select which participants you would like to move into {{activity.name}}. </br>
+You may move users later using the Edit Participants button the main Program page.</p>
+
+<form action="/{{ program.name }}/editParticipants/" method="post"  enctype="multipart/form-data">
+{% csrf_token %}
+<input type="hidden" name="action" value="{{activity.id}}" />
+
+<br/>
+Participants:
+<ul>
+{% for participant in program.participant_set.all %}
+	<li>
+		<input type="checkbox" value="{{participant.id}}" name="selected_participants" />{{participant.user.first_name}} {{participant.user.last_name}} ({{participant.activity.name|default:"unassigned"}})
+	</li> 
+{% endfor %}
+</ul>
+
+<input type="button" onClick="toggle(this, 'checked')" value="Select All" />
+<input type="button" onClick="toggle(this, false)" value="Select None" /><br/> 
+<br/>
+<input type="submit" value="Submit" /></td>
+</form>
+
+{% endblock %}

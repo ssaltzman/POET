@@ -1,0 +1,135 @@
+<!--
+Approved for Public Release: 12-3351. Distribution Unlimited
+			(c)2012-The MITRE Corporation. 
+Licensed under the Apache License, Version 2.0 (the "License");
+			you may not use this file except in compliance with the License.
+			You may obtain a copy of the License at
+			http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-->
+
+{% extends "base.html" %}
+{% load thumbnail %}
+{% block title %}{{program.name}}{% endblock %}
+{% block css %}<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}program.css" />
+{% endblock %}
+{% block content %}
+	
+<script type="text/javascript">
+
+	function onloadFunction() {
+		{% for activity in program.activity_set.all %}
+			button = document.getElementById("activity{{ activity.id }}{{ activity.state }}").style.disabled = "disabled";
+			button = document.getElementById("activity{{ activity.id }}{{ activity.state }}").style.display = "none";
+		{% endfor %}
+	}
+
+    $(function() {
+        $("button,input:submit,input:button").button();
+        $("input:submit,input:button").css("font-size",".9em");
+    });
+    
+    function submitEditParticipants(value){
+	document.forms["editParticipants"].submit();
+    }
+</script>
+	
+<center><h1>{{ program.name }}</h1></center>
+
+<div id="participants" class="module">
+	<h1>Participants</h1>
+	<div class="innerModule">
+		<table border=1 cellpadding=3 id="participantsTable">
+				<tr>
+					<th>Admins</th>
+			{% for participant in program.participant_set.all %}
+			{% if participant.admin %}
+				<tr>
+					<form id="editParticipants" action="/{{ program.name }}/editParticipants/" method="post"  enctype="multipart/form-data">
+					{% csrf_token %}
+						<td> {{participant.user.first_name}} {{participant.user.last_name}} </td>
+					</form>
+				</tr>
+			{% endif %}
+			{% endfor %}
+		</table>
+		<br/>
+		<table border=1 cellpadding=3 id="participantsTable">
+				<tr>
+					<th>User</th>
+					<th>Activity</th>
+			{% for participant in program.participant_set.all %}
+			{% if not participant.admin %}
+				<tr>
+					<form id="editParticipants" action="/{{ program.name }}/editParticipants/" method="post"  enctype="multipart/form-data">
+					{% csrf_token %}
+						<td> {{participant.user.first_name}} {{participant.user.last_name}} </td>
+						<td>
+							{{participant.activity.name|default:"unassigned"}}
+						</td>
+					</form>
+				</tr>
+			{% endif %}
+			{% endfor %}
+		</table>
+		<br />
+		{% if admin %}
+		<a href="move/"><input type="button" value="Edit Participants" /></a>
+		{% endif %}
+	</div>
+</div>
+
+<div class="module">
+	<h1>Activities</h1>
+	<div class="innerModule">
+		<ul>
+		{% for activity in activity_list %}
+			<li>
+				<a href="{{activity.id}}" style="font-size:150%;">{{activity.name}}</a> ({{ activity.get_type }})<br/>
+				{% if admin %} 
+				<a href="{{activity.id}}/open"><input type="button" value="Open"  id="activity{{activity.id}}O"/></a>
+				<a href="{{activity.id}}/pause"><input type="button" value="Pause" id="activity{{activity.id}}P"/></a>
+				<a href="{{activity.id}}/close"><input type="button" value="Close" id="activity{{activity.id}}C"/></a>
+				{% endif %}
+			</li>
+		{% empty %}
+			{% if admin %}<li>No activities created yet.</li>
+			{% else %}<li>You are not currently assigned to any activity.</li>{% endif %}
+		{% endfor %}
+		</ul>
+		{% if admin %}
+		<a href="/{{program.name}}/newactivity"><input type="button" value="New Activity..." /></a>
+		{% endif %}
+	</div>
+</div>
+<div class="module">
+	<h1>Survey Data</h1>
+	<div class="innerModule">
+		<ul>
+		{% for survey in survey_list %}
+			<li>
+				<a href="survey/{{survey.id}}" style="font-size:150%;">{{survey.name}}</a>
+				{% if admin %} 
+				{% if survey.visible %}
+					<a href="survey/{{survey.id}}/invisible"><input type="button" value="Make Invisible"/></a>
+				{% else %}
+					<a href="survey/{{survey.id}}/visible"><input type="button" value="Make Visible"/></a>
+				{% endif %}
+				{% endif %}
+			</li>
+		{% empty %}
+			<li>No survey data imported yet.</li>
+		{% endfor %}
+		</ul>
+		{% if admin %} 
+		<form action="uploadsurvey/" method="post"  enctype="multipart/form-data">
+			{% csrf_token %}
+			<input type="file" name="survey_upload" size="50" value=""/>
+			<input type="submit" value="Upload Survey" />
+		</form>
+		{% endif %}
+	</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,62 @@
+<html>
+<head>
+<style type="text/css">
+  .tab 
+  { 
+    background-color: #F4F4F4; 
+    font-family: Helvetica; 
+    letter-spacing: 1px; 
+    word-spacing: 2px; 
+    padding: 0px 15px 6px 15px;
+  }
+  .tabsel
+  { 
+    font-family: Helvetica; 
+    letter-spacing: 1px; 
+    word-spacing: 2px; 
+    padding: 0px 15px 6px 15px;
+  }
+</style>
+</head>
+
+<body background="background1.png">
+<center>
+<p>&nbsp;</p>
+
+
+<table border=0 cellspacing=0 cellpadding=0>
+<tr>
+  <td background="tab-dark.png"><img src="tab-dark.png"></td>
+  <td background="tab-top.png"><img src="tab-top.png"></td>
+  <td background="tab-dark.png"><img src="tab-dark.png"></td>
+  <td background="tab-top-sel.png"><img src="tab-top-sel.png"></td>
+  <td background="tab-curve-sel.png"><img src="tab-curve-sel.png"></td>
+  <td background="tab-top.png"><img src="tab-top.png"></td>
+  <td background="tab-curve.png"><img src="tab-curve.png"></td>
+  <td background="tab-top.png"><img src="tab-top.png"></td>
+  <td background="tab-curve-end.png"><img src="tab-curve-end.png"></td>
+</tr><tr>
+  <td background="tab-dark.png"><img src="tab-dark.png"></td>
+  <td class="tab">Information</td>
+  <td background="tab-dark.png"><img src="tab-dark.png"></td>
+  <td class="tabsel">Gantt Chart</td>
+  <td background="tab-line-sel.png"><img src="tab-line-sel.png"></td>
+  <td class="tab">Calendar</td>
+  <td background="tab-line.png"><img src="tab-line.png"></td>
+  <td class="tab">Actors</td>
+  <td background="tab-line-end.png"><img src="tab-line-end.png"></td>
+</tr><tr>
+  <td background="tab-dark.png"><img src="tab-dark.png"></td>
+  <td background="tab-dark.png"><img src="tab-dark.png"></td>
+  <td background="tab-dark.png"><img src="tab-dark.png"></td>
+  <td background="spacer-1px.png"><img src="spacer-1px.png"></td>
+  <td background="tab-botright-sel.png"><img src="tab-botright-sel.png"></td>
+  <td background="tab-dark.png"><img src="tab-dark.png"></td>
+  <td background="tab-dark.png"><img src="tab-dark.png"></td>
+  <td background="tab-dark.png"><img src="tab-dark.png"></td>
+  <td background="tab-botright-end.png"><img src="tab-botright-end.png"></td>
+</tr>
+</table>
+
+</center>
+</html>

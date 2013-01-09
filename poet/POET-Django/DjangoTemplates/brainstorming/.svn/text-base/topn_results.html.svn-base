@@ -1,0 +1,128 @@
+<!--
+Approved for Public Release: 12-3351. Distribution Unlimited
+			(c)2012-The MITRE Corporation. 
+Licensed under the Apache License, Version 2.0 (the "License");
+			you may not use this file except in compliance with the License.
+			You may obtain a copy of the License at
+			http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-->
+
+{% extends "base.html" %}
+{% load thumbnail %}
+{% block title %}{{program_name}}: Top N Results{% endblock %}
+{% block css %}<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}brainstorming.css" />
+<link rel="stylesheet" href="{{ STATIC_URL }}verticaltabs.css" />
+<script type="text/javascript" src="{{ STATIC_URL }}verticaltabs.pack.js"></script>
+{% endblock %}
+{% block content %}
+
+<script type="text/javascript">
+    $(function() {
+        $("button,input:submit,input:button").button();
+        $("input:submit,input:button").css("font-size",".9em");
+        $("#submitIdea").verticaltabs();
+        $("#expandedMedia").dialog({ autoOpen: false, width:'auto',height:'auto', modal: true });
+        //$("#submitIdea").tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
+        //$("#submitIdea li").removeClass('ui-corner-top').addClass('ui-corner-left');
+    });
+        
+    function enlargeMedia(url, image){
+        if(image) {
+            $("#expandedMedia").html("<img src='" + url + "' />");
+        } else {
+            $("#expandedMedia").html("<embed src='" + url + "' autostart='false' />");
+        }
+        
+        $("#expandedMedia").dialog("open");
+        
+    }
+</script>
+
+<center><h1>Top {{activity.topn.n}} Vote Results: {{activity.name}}</h1></center>
+
+{% if user_is_admin %}
+	<a href="results/">Results</a>
+{% endif %}
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<br/>
+
+<table class="resultsTable">
+{% for item in ordered_list%}
+	<tr>
+	{% for thing in item %}
+		{% if forloop.parentloop.first %}
+			<th style="padding-right:10px;">{{thing}}</th>
+		{% else %}
+			{% if forloop.first %}
+				<td >{{thing.text}}</td>
+			{% else %}{% if not forloop.last %}
+				<td style="text-align: center;">{{thing}}</td>
+			{% else %}
+				<td style="color: #00F; text-align: center;">{{thing}}</td>
+			{% endif %}{% endif %}
+		{% endif %}
+	{% endfor %}
+	</tr>
+{% endfor %}
+</table>
+<br/>
+
+<table class="resultsTable">
+{% for item in ordered_list2%}
+	<tr>
+	{% for thing in item %}
+		{% if forloop.parentloop.first %}
+			<th style="padding-right:10px;">
+				{% if not forloop.first and not forloop.last %}>{% endif %}
+			{{thing}}</th>
+		{% else %}
+			{% if forloop.first %}
+				<td >{{thing.text}}</td>
+			{% else %}{% if not forloop.last %}
+				<td style="text-align: center;">{{thing}}</td>
+			{% else %}
+				<td style="color: #00F; text-align: center;">{{thing}}</td>
+			{% endif %}{% endif %}
+		{% endif %}
+	{% endfor %}
+	</tr>
+{% endfor %}
+</table>
+<br/>
+
+<table class="resultsTable">
+	<tr>
+		<th>Idea</th>
+		{% comment %}{% for participant in participants %}
+			<th>{{participant.user.first_name}}</th>
+		{% endfor %}{% endcomment %}
+		<th></th>
+	</tr>
+{% for node, percent in node_and_percent_list %} 
+	<tr>
+		<td>
+			{{ node.text }}
+		</td>
+		{% comment %}{% for participant in participants %}
+			<td>
+				Vote here
+			</td>
+		{% endfor %}{% endcomment %}
+		<td>
+			{{ percent|floatformat:2 }}%
+		</td>
+	</tr>
+{% endfor %}
+</table>
+
+{% endblock %}

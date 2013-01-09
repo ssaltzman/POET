@@ -1,0 +1,86 @@
+<!--
+Approved for Public Release: 12-3351. Distribution Unlimited
+			(c)2012-The MITRE Corporation. 
+Licensed under the Apache License, Version 2.0 (the "License");
+			you may not use this file except in compliance with the License.
+			You may obtain a copy of the License at
+			http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-->
+
+{% extends "base.html" %}
+{% load thumbnail %}
+{% block title %}{{program.name}}{% endblock %}
+{% block css %}<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}program.css" />
+{% endblock %}
+{% block content %}
+<script type="text/javascript">
+    
+    function submitEditParticipants(participantId, action){
+		document.forms["editParticipants"+participantId].submit();
+    }
+</script>
+	
+
+<center id="titleDiv"><h1>{{ program.name }}</h1></center>
+
+<div id="editModule" class="module">
+	<h1>Participants</h1>
+	<div class="innerModule">
+		<table border=1 cellpadding=3 id="participantsTable">
+			{% for participant in program.participant_set.all %}
+				<tr>
+					<form id="editParticipants{{participant.id}}" action="/{{ program.name }}/editParticipants/" method="post"  enctype="multipart/form-data">
+					<input type="hidden" name="participant_id" value="{{participant.id}}" />
+					{% csrf_token %}
+						<td> {{participant.user.first_name}} {{participant.user.last_name}} </td>
+						<td>
+							<select name="action" id="action" onchange="javascript:submitEditParticipants({{participant.id}}, 'activity_update');">
+								{% if not participant.activity %}<option>unassigned</option>{% endif %}
+								{% for activity in program.activity_set.all %}
+								<option value="{{activity.id}}" {% if participant.activity = activity %}selected="selected"{% endif %}>
+									{{activity.name}} ({{ activity.get_type }})
+								</option>
+								{% endfor %}
+							</select>
+						</td>
+						<td>
+							<input type="checkbox" name="check{{participant.id}}" {% if participant.admin %}checked="checked" onclick="javascript:submitEditParticipants({{participant.id}}, 'remove_admin');"{% else %}onclick="javascript:submitEditParticipants({{participant.id}}, 'make_admin');"{% endif %}{% if user == participant.user %}disabled="disabled"{% endif %}> Admin</td>
+						</td>
+					</form>
+				</tr>
+			{% endfor %}
+		</table>
+	</div>
+</div>
+
+<form action="/{{ program.name }}/editParticipants/" method="post"  enctype="multipart/form-data">
+{% csrf_token %}
+Participants:
+<ul>
+{% for participant in program.participant_set.all %}
+	<li>
+		<input type="checkbox" value="{{participant.id}}" name="selected_participants" />{{participant.user.first_name}} {{participant.user.last_name}} ({{participant.activity.name|default:"unassigned"}})
+	</li> 
+{% endfor %}
+</ul>
+
+<select name="action" id="action">
+<option value="null">Choose an action...</option>
+<optgroup label="Actions">
+	<option value="makeAdmin">Make administrators</option>
+</optgroup>
+<optgroup label="Move To...">
+{% for activity in program.activity_set.all %}
+	<option value="{{activity.id}}">{{activity.name}} ({{ activity.get_type }})</option>
+{% endfor %}
+</optgroup>
+<optgroup label="Delete">
+	<option value="remove">Remove participants and all associated data</option>
+</optgroup>
+</select>
+<input type="submit" value="Submit" /></td>
+</form>
+
+{% endblock %}

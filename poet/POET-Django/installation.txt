@@ -1,0 +1,11 @@
+Installing: 
+1)	Download and install Python 2.7 from http://www.python.org/download/releases/2.7.2/ . (2.5 or 2.6 should also work). 
+2)  Add Python to your system path. For Windows, right-click on Computer and choose "Properties". Find Advanced settings, then Environment Variables. Find the PATH variable in the list, then edit its value to include your Python directory (for example, C:\Python27) at the end. 
+3)	Checkout the POET-Django folder, at svn+ssh://developer.mitre.org/svnroot/poet/POET-Django, and navigate to there.
+4) 	Run: "/trunk/pythonLibs/Imaging-1.1.6/python setup.py install"
+5)	Run: "/trunk/pythonLibs/Django-1.3/python setup.py install"
+6)	Run: "/trunk/pythonLibs/easy-thumbnails/python setup.py install".
+
+Running:
+1)	Run: "/POET-Django/DjangoProjects/POET/python manage.py syncdb". This will set up the database. 
+2)	Run: "/POET-Django/DjangoProjects/POET/python manage.py runserver". POET will now be accessible at http://127.0.0.1:8000.

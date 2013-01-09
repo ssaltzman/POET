@@ -1,0 +1,47 @@
+<!--
+Approved for Public Release: 12-3351. Distribution Unlimited
+			(c)2012-The MITRE Corporation. 
+Licensed under the Apache License, Version 2.0 (the "License");
+			you may not use this file except in compliance with the License.
+			You may obtain a copy of the License at
+			http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-->
+
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}default.css" />
+	<script src="{{ STATIC_URL }}jquery-1.4.2.min.js"></script>
+	<script src="{{ STATIC_URL }}jquery-ui-1.8.2.custom.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}jquery-ui-1.8.2.custom.css" />
+	{% block css %}{% endblock %}
+</head>
+<body onload="onloadFunction()">
+    <table id="menu-bar">
+	<tr>
+    {% if user.is_authenticated %}
+	<td id="menu-logo"><div id="poet-logo">POET</div></td>
+		
+	<td id="menu-nav">
+	    <div>
+		logged in as:<strong> {{ user.first_name }} </strong>
+		<span class="divider">|</span><a href="/manageuser/{{user.id}}/">user settings</a>
+		<span class="divider">|</span><a href="/">home</a>
+		{% if activity %}<span class="divider">|</span><a href="../">Program</a>{% endif %}
+		{% if user.is_staff %}<span class="divider">|</span><a href="/admin">Admin</a> {% endif %}
+		<span class="divider">|</span><a href="/logout">logout</a>
+	    </div>
+	</td>
+    {% else %}
+	<td id="menu-logo"><div id="poet-logo">POET</div></td>
+	<td id="menu-nav"><a href="/login">Login</a></td>
+    {% endif %}
+	</tr>
+    </table>
+	<hr class="line"/>
+	<h1>{% block head %}{% endblock %}</h1>
+    {% block content %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,15 @@
+K 10
+svn:ignore
+V 166
+apache.py
+poetDatabase - Copy.db
+poetDatabase.db
+poetDatabase.old1
+poetDatabase.old2
+poetDatabase.old3
+poetDatabase.olddb
+poet_debug.log
+poet_request.log
+settings.py
+
+END

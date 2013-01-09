@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html;charset=UTF-8" />
+	<title>Charting</title>
+	<link href="css/basic.css" type="text/css" rel="stylesheet" />
+	<script type="text/javascript" src="EnhanceJS/enhance.js"></script>
+	<script type="text/javascript">
+		// Run capabilities test
+		enhance({
+			loadScripts: [
+				{src: 'excanvas.js', iecondition: 'all'},
+				'jquery.min.js',
+				'visualize.jQuery.js',
+				'poetViz.js'
+			],
+			loadStyles: [
+				'visualize.css',
+				'visualize-dark.css'
+			]
+		});
+    </script>
+</head>
+<body>
+
+<table >
+	<caption>Program ABCD Survey Results</caption>
+	<thead>
+		<tr>
+			<td></td>
+			<th scope="col">Trust</th>
+			<th scope="col">Mindset</th>
+			<th scope="col">Resources</th>
+			<th scope="col">Complexity</th>
+			<th scope="col">Teamwork</th>
+			<th scope="col">Demonstrability</th>
+			<th scope="col">Commitment</th>
+			<th scope="col">SA</th>
+			<th scope="col">Agility</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<th scope="row">PM</th>
+			<td>7</td>
+			<td>4</td>
+			<td>5</td>
+			<td>6</td>
+			<td>3</td>
+			<td>6</td>
+			<td>5</td>
+			<td>3</td>
+			<td>7</td>
+		</tr>
+		<tr>
+			<th scope="row">PMO</th>
+			<td>3</td>
+			<td>6</td>
+			<td>5</td>
+			<td>3</td>
+			<td>2</td>
+			<td>6</td>
+			<td>5</td>
+			<td>2</td>
+			<td>6</td>
+		</tr>
+		<tr>
+			<th scope="row">Contractor</th>
+			<td>7</td>
+			<td>5</td>
+			<td>3</td>
+			<td>6</td>
+			<td>7</td>
+			<td>3</td>
+			<td>7</td>
+			<td>7</td>
+			<td>6</td>
+		</tr>
+		<tr>
+			<th scope="row">Senior Stakeholder</th>
+			<td>7</td>
+			<td>6</td>
+			<td>4</td>
+			<td>5</td>
+			<td>6</td>
+			<td>7</td>
+			<td>6</td>
+			<td>7</td>
+			<td>5</td>
+		</tr>
+		<tr>
+			<th scope="row">User</th>
+			<td>6</td>
+			<td>6</td>
+			<td>7</td>
+			<td>5</td>
+			<td>4</td>
+			<td>5</td>
+			<td>5</td>
+			<td>4</td>
+			<td>6</td>
+		</tr>
+	</tbody>
+</table>
+
+</body>
+</html>

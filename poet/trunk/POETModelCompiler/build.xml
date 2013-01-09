@@ -1,0 +1,113 @@
+<?xml version="1.0"?>
+<project name="POETModelCompiler" default="all">
+
+    <property name="poet.lib.dir" value="${basedir}/lib"/>
+    <property name="poet.build.dir" value="${basedir}/build"/>
+    <property name="poet.lib.build.dir" value="${poet.build.dir}/poet-lib"/>
+    <property name="poet.ws.build.dir" value="${poet.build.dir}/poet-ws"/>
+    <property name="poet.lib.src.dir" value="${basedir}/POETModelLib/src"/>
+    <property name="poet.lib.package.dir" value="${basedir}/POETModelLib"/>
+    <property name="poet.ws.src.dir" value="${basedir}/POETModelWS/src"/>
+    <property name="poet.xmltypes.lib.dir" value="${poet.build.dir}/xmltypes"/>
+
+    <taskdef name="xmlbean" classname="org.apache.xmlbeans.impl.tool.XMLBean" classpath="${poet.lib.dir}/xbean.jar"/>    
+
+    <!-- setup application classpath -->
+    <path id="lib.class.path">
+        <fileset dir="${poet.lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+        <fileset dir="${poet.xmltypes.lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <path id="poet.class.path">
+        <path refid="lib.class.path"/>
+        <fileset dir="${poet.xmltypes.lib.dir}">
+            <include name="*.jar"/>
+        </fileset>
+    </path>
+
+    <path id="ws.class.path">
+        <path refid="poet.class.path"/>
+        <pathelement location="${poet.lib.build.dir}/artifacts/poet-lib.jar"/>
+    </path>
+
+    <path id="launch.ws.class.path">
+        <path refid="ws.class.path"/>
+        <pathelement location="${poet.ws.build.dir}/artifacts/poet-ws.jar"/>
+    </path>
+
+
+    <target name="all" depends="build-xmlbeans, build-lib, build-ws"/>
+
+    <target name="build-xmlbeans" depends="init-xmlbeans, compile-xmlbeans, package-xmlbeans"/>
+
+    <target name="init-xmlbeans">
+        <mkdir dir="${poet.build.dir}"/>
+        <mkdir dir="${poet.xmltypes.lib.dir}"/>
+    </target>
+
+    <target name="compile-xmlbeans">
+        <xmlbean destfile="${poet.xmltypes.lib.dir}/poet-types.jar" classpathref="lib.class.path">
+            <fileset dir="${poet.lib.package.dir}/resources">
+                <include name="*.xsd"/>
+            </fileset>
+        </xmlbean>
+    </target>
+
+    <target name="package-xmlbeans"/>
+
+    <target name="build-lib" depends="init-lib, compile-lib, package-lib"/>
+
+    <target name="build-ws" depends="init-ws, compile-ws, package-ws"/>
+
+    <target name="init-lib">
+        <mkdir dir="${poet.build.dir}"/>
+        <mkdir dir="${poet.lib.build.dir}"/>
+        <mkdir dir="${poet.lib.build.dir}/classes"/>
+        <mkdir dir="${poet.lib.build.dir}/artifacts"/>
+    </target>
+
+    <target name="compile-lib">
+        <javac srcdir="${poet.lib.src.dir}"
+         destdir="${poet.lib.build.dir}/classes"
+         classpathref="poet.class.path"
+         source="1.6"
+        />
+    </target>
+
+    <target name="package-lib">
+        <jar destfile="${poet.lib.build.dir}/artifacts/poet-lib.jar" basedir="${poet.lib.build.dir}/classes"/>             
+    </target>
+
+    <target name="init-ws">
+        <mkdir dir="${poet.build.dir}"/>
+        <mkdir dir="${poet.ws.build.dir}"/>
+        <mkdir dir="${poet.ws.build.dir}/classes"/>
+        <mkdir dir="${poet.ws.build.dir}/artifacts"/>
+    </target>
+
+    <target name="compile-ws">
+        <javac srcdir="${poet.ws.src.dir}"
+         destdir="${poet.ws.build.dir}/classes"
+         classpathref="ws.class.path"
+         source="1.6"
+        />
+    </target>
+
+    <target name="package-ws">
+        <jar destfile="${poet.ws.build.dir}/artifacts/poet-ws.jar" basedir="${poet.ws.build.dir}/classes"/>        
+    </target>
+
+
+    <target name="launch-ws">
+        <property name="cp" refid="launch.ws.class.path"/>
+
+        <!-- echo message="CP is ${cp}"/ -->
+        <java fork="true" classname="org.mitre.poet.model.ws.ModelCompilerWS"
+              classpathref="launch.ws.class.path"/>
+    </target>
+
+</project>

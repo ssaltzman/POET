@@ -1,0 +1,86 @@
+<!--
+Approved for Public Release: 12-3351. Distribution Unlimited
+			(c)2012-The MITRE Corporation. 
+Licensed under the Apache License, Version 2.0 (the "License");
+			you may not use this file except in compliance with the License.
+			You may obtain a copy of the License at
+			http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-->
+
+{% extends "base.html" %}
+{% load thumbnail %}
+{% block title %}{{program.name}}: Pairwise Comparison{% endblock %}
+{% block css %}<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}pairwise.css" />
+<link rel="stylesheet" href="{{ STATIC_URL }}verticaltabs.css" />
+<script type="text/javascript" src="{{ STATIC_URL }}verticaltabs.pack.js"></script>
+{% endblock %}
+{% block content %}
+
+<script type="text/javascript">	
+    $(function() {
+        $("button,input:submit,input:button").button();
+        $("input:submit,input:button").css("font-size",".9em");
+        $("#submitIdea").verticaltabs();
+        $("#expandedMedia").dialog({ autoOpen: false, width:'auto',height:'auto', modal: true });
+        //$("#submitIdea").tabs().addClass('ui-tabs-vertical ui-helper-clearfix');
+        //$("#submitIdea li").removeClass('ui-corner-top').addClass('ui-corner-left');
+    });
+        
+    function enlargeMedia(url, image){
+        if(image) {
+            $("#expandedMedia").html("<img src='" + url + "' />");
+        } else {
+            $("#expandedMedia").html("<embed src='" + url + "' autostart='false' />");
+        }
+        
+        $("#expandedMedia").dialog("open");
+        
+    };
+	
+</script>
+
+<center><h1>Pairwise Comparison: {{activity.name}}</h1></center>
+
+<div id="expandedMedia">//{{ STATIC_URL }}{{n.image.url}}</div>
+
+{% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
+{% if messages %}
+<ul class="messages">
+    {% for message in messages %}
+    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+<br/>
+
+{% if node1 %}
+<h4>Which of these options do you prefer?</h4>
+<form action="/{{ program.name }}/{{ activity.id }}/" method="post"  enctype="multipart/form-data">
+{% csrf_token %}
+<input type="hidden" name="PairwiseVote" value="PairwiseVote" />
+<input type="hidden" name="Node1" value="{{node1.id}}" />
+<input type="hidden" name="Node2" value="{{node2.id}}" />
+<div id="divA" style="float:left; margin-left: 10%; width: 39%;">
+	<p style="text-align:center; margin-left: auto; margin-right:auto;">
+		<button type="submit" name="button" value="A">{{node1.text}}</button>
+	</p>
+</div>
+<div id="divB" style="float:right; margin-right: 10%; width: 40%;">
+	<p style="text-align:center; margin-left: auto; margin-right:auto;">
+		<button type="submit" name="button" value="B">{{node2.text}}</button>
+	</p>
+</div>
+<br />
+<p id="divNA" style="text-align:center; margin-left: auto; margin-right: auto; width: 80%; clear: both;">
+	<button type="submit" name="button" value="E">Neither / Skip</button>
+</p>
+</form>
+{% else %}
+<h4>{{message}}</h4>
+{% if user_is_admin %}
+<h4><a href="results/">Results</a></h4>
+{% endif %}
+{% endif %}
+{% endblock %}

@@ -1,0 +1,99 @@
+<!--
+Approved for Public Release: 12-3351. Distribution Unlimited
+			(c)2012-The MITRE Corporation. 
+Licensed under the Apache License, Version 2.0 (the "License");
+			you may not use this file except in compliance with the License.
+			You may obtain a copy of the License at
+			http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+-->
+
+{% extends "base.html" %}
+{% block title %}Program List{% endblock %}
+{% block content %}
+
+<script type="text/javascript">
+    $(function() {
+        $("button,input:submit,input:button").button();
+        $("input:submit,input:button").css("font-size",".9em");
+    });
+</script>
+
+<div style="float: left;">
+<div class="module" style="width: 450px;">
+    <h1>Programs</h1>
+    <div id='programs'>
+{% if program_list %}
+	{% for prog in program_list %}
+            <div class="programList">
+		<a href="/{{ prog.name }}/"><span>{{ prog.name }} </span></a>
+            </div>
+	{% endfor %}
+{% else %}
+	<p>No programs exist yet.</p>
+{% endif %}
+
+{% if user.is_staff %}
+<a id="addProgramButton" href="/createprogram/">
+	<input type="button" value="Add Program" /></a>
+{% endif %}
+
+{% comment %}<a id="addUserButton" href="/admin/auth/user/add/"><input type="button" value="Add User" /></a>{% endcomment %}
+<br/>
+
+</div>
+</div>
+<br/>
+<fieldset style="width:440px;">
+	<legend>Messages</legend>
+	{% for message in messages %}
+		<p{% if message.tags %} style="color:#660; font-size:18px;" class="{{ message.tags }}"{% endif %}>
+			{{ message }}
+		</p>
+	{% empty %}
+		<p style="color:#191; font-size:18px;">No messages.</p>
+	{% endfor %}
+</fieldset>
+</div>
+
+{% comment %}
+{% if user.is_staff %}
+<br/>
+<form action="/testpopulate/" method="post">
+{% csrf_token %}
+<input type="submit" value="DEBUG: Populate" />
+</form>
+{% endif %}
+{% endcomment %}
+
+{% if user.is_staff %}
+<div class="module" style="width: 40%; float: right;">
+	<h1>Users</h1>
+	<div id='users'>
+	<table class='usertable' style="width:100%">
+		<tr>
+			<th>User</th>
+			<th>Type</th>
+			<th></th>
+		</tr>
+		{% for u in user_list %}
+		<tr>
+			<td>{{u.get_full_name}}</td>
+			{% if u.is_staff %}
+			<td>Staff</td>
+			<td>{% if user.is_superuser or u.id == user.id %}<a href="/manageuser/{{u.id}}/">Manage User</a>{% endif %}</td>
+			{% else %}
+			<td>User</td>
+			<td><a href="/manageuser/{{u.id}}/">Manage User</a></td>
+			{% endif %}
+		</tr>
+	{% endfor %}
+	</table>
+	</br><a id="addUserButton" href="/manageuser/"><input type="button" value="Add User" /></a>
+
+	</div>
+</div>
+{% endif %}
+
+{% endblock %}
